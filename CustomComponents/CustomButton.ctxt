@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=CustomButton
+comment1.params=text
+comment1.target=CustomButton(java.lang.String)
+comment1.text=\r\n\ Constructor\ to\ create\ a\ button\ with\ specified\ text\r\n\ \r\n\ @param\ text\ Text\ of\ button\r\n
+comment2.params=text\ foreground\ background
+comment2.target=CustomButton(java.lang.String,\ java.awt.Color,\ java.awt.Color)
+comment2.text=\r\n\ Constructor\ to\ create\ a\ button\ with\ specified\ text,\ foreground\ and\ background\r\n\ \r\n\ @param\ text\ \ \ \ \ \ \ Text\ of\ button\r\n\ @param\ foreground\ Color\ of\ foreground\r\n\ @param\ background\ Color\ of\ background\r\n
+comment3.params=
+comment3.target=void\ createButton()
+comment3.text=\r\n\ Method\ to\ create\ a\ button,\ called\ from\ constructor\r\n\ \r\n\ @return\ void\r\n
+comment4.params=e
+comment4.target=void\ mouseEntered(java.awt.event.MouseEvent)
+comment5.params=e
+comment5.target=void\ mouseExited(java.awt.event.MouseEvent)
+comment6.params=
+comment6.target=void\ buttonHover()
+comment6.text=\r\n\ Method\ handle\ mouseEntered()\r\n\ \r\n\ @return\ void\r\n
+comment7.params=
+comment7.target=void\ buttonHoverLeave()
+comment7.text=\r\n\ Method\ handle\ mouseExited()\r\n\ \r\n\ @return\ void\r\n
+numComments=8
