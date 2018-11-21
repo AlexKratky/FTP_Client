@@ -1,6 +1,8 @@
 import FTP_Dialog.FTP_Dialog;
 import FTP_Dialog.FTPDataListener;
-
+/**
+ * TEST CLASS
+ */
 public class ftp_dialog_test
 {
     public static void main(String args[]) {
