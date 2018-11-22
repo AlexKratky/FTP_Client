@@ -1,3 +1,5 @@
 theme: jekyll-theme-cayman
 baseurl: ""
 url: "https://alexkratky.github.io/FTP_Client/"
+title: FTP Client
+description: FTP Client written in Java.
