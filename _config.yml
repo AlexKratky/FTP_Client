@@ -1,4 +1,4 @@
-theme: jekyll-theme-slate
+theme: jekyll-theme-cayman
 title: FTP Client
 baseurl: ""
 url: "https://alexkratky.github.io/FTP_Client/"
