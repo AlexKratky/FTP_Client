@@ -23,9 +23,10 @@ import java.awt.event.ActionEvent;
 import CustomComponents.CustomInput;
 import CustomComponents.CustomInputPassword;
 import CustomComponents.CustomButton;
-import CustomComponents.CustomFont;
 import FTP_Dialog.FTPDataListener;
 import Classes.SpringUtilities;
+import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 
 
 public class FTP_Dialog {
@@ -33,7 +34,7 @@ public class FTP_Dialog {
     private Color background = new Color(26, 26, 29);
     private JFrame frame = null;
     private Container cp = null;
-
+    
     // ActionListener AE
     /**
      * Create and display FTP_Dialog.
@@ -42,9 +43,6 @@ public class FTP_Dialog {
      */
     public FTP_Dialog(FTPDataListener ftpDL) {
         // createDialog(AE);
-        CustomFont CF = new CustomFont();
-        CF.registerFont("UbuntuRegular");
-        CF.registerFont("UbuntuLight");
         createDialog(ftpDL);
     }
 
@@ -61,7 +59,9 @@ public class FTP_Dialog {
         frame.setSize(400, 310);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
-        frame.setIconImage(null);
+        try {
+            frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../img/icon.png")));
+        } catch(Exception e) {System.out.println(e);}
         cp = frame.getContentPane();
         cp.setBackground(background);
 
@@ -113,10 +113,14 @@ public class FTP_Dialog {
                 try {
                     port = Integer.valueOf(inputPort.getText());
                 } catch (NumberFormatException nfe) {
-
+                    
                 }
                 if (server.length() > 0 && user.length() > 0 && port > 0) {
                     ftpDL.dataPerformed(server, user, pass, port);
+                    frame.setVisible(false);
+                    frame.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Invalid data.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         };

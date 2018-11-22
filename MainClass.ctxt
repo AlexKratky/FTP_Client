@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=MainClass
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+comment2.params=
+comment2.target=void\ run()
+comment3.params=
+comment3.target=void\ displayDialog()
+comment4.params=
+comment4.target=void\ run()
+comment5.params=server\ username\ password\ port
+comment5.target=void\ dataPerformed(java.lang.String,\ java.lang.String,\ java.lang.String,\ int)
+comment6.params=
+comment6.target=void\ displaySettings()
+numComments=7

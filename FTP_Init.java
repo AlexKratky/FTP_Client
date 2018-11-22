@@ -1,0 +1,72 @@
+import java.awt.Color;
+import javax.swing.JFrame;
+import java.awt.Container;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import CustomComponents.CustomButton;
+import java.awt.GridLayout;
+import javax.swing.JPanel;
+import java.awt.Toolkit;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class FTP_Init {
+    private Color foreground = new Color(195, 7, 63);
+    private Color background = new Color(26, 26, 29);
+    private JFrame frame = null;
+    private Container cp = null;
+    
+    public FTP_Init() {
+
+    }
+
+    public void displayInitWindow() {
+        frame = new JFrame("FTP Client");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
+        frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("img/icon.png")));
+        cp = frame.getContentPane();
+        cp.setBackground(background);
+        cp.setLayout(null);
+        
+        JLabel title = new JLabel("FTP Client", SwingConstants.CENTER);
+        title.setBounds(0, 15, frame.getWidth(), 34);
+        title.setFont(new Font("Ubuntu Light", Font.PLAIN, 30));
+        title.setForeground(foreground);
+        
+        JLabel subtitle = new JLabel("Welcome to FTP Client.", SwingConstants.CENTER);
+        subtitle.setBounds(0, 60, frame.getWidth(), 24);
+        subtitle.setFont(new Font("Ubuntu Light", Font.PLAIN, 20));
+        subtitle.setForeground(Color.WHITE);
+        
+        JPanel bottom = new JPanel();
+        bottom.setLayout(new GridLayout(1,2));
+        bottom.setBounds(0, frame.getHeight() - 80, frame.getWidth(), 51);
+        
+        CustomButton settings = new CustomButton("Settings");
+        settings.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MainClass.displaySettings();
+            }
+        });
+        CustomButton connect = new CustomButton("Connect");
+        connect.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.setVisible(false);
+                frame.dispose();
+                MainClass.displayDialog();
+            }
+        });
+        
+        bottom.add(settings);
+        bottom.add(connect);
+        cp.add(title);
+        cp.add(subtitle);
+        cp.add(bottom);
+        frame.setVisible(true);
+    }
+    
+}
