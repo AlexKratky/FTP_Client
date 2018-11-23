@@ -1,3 +1,13 @@
+/**
+ * @name FTP_Client.java
+ * @version v0.1 (23-11-2018)[dd-mm-yyyy]
+ * @link https://alexkratky.cz Author website
+ * @author Alex Kratky <info@alexkratky.cz>
+ * @copyright Copyright (c) 2018 Alex Kratky
+ * @license http://opensource.org/licenses/mit-license.php MIT License
+ * @description FTP Data Listener interface.
+ */
+
 import javax.swing.SwingUtilities;
 import java.awt.Color;
 import javax.swing.JFrame;
@@ -34,6 +44,14 @@ public class FTP_Client {
     
     }
     
+    /**
+        Set creditials and display GUI.
+        @param srv Adress of server.
+        @param user FTP Username.
+        @param pass FTP Password.
+        @param port Port of server.
+        @return void
+     */
     public void connect(String srv, String user, String pass, int port) {
         System.out.println(srv + " / " + user + " / " + pass + " / " + port);
         this.server = srv;
@@ -47,6 +65,10 @@ public class FTP_Client {
         });
     }
     
+    /**
+        Display GUI, called from connect().
+        @return void
+     */
     public void gui() {
         frame = new JFrame("FTP - " + server);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -78,6 +100,11 @@ public class FTP_Client {
         establishConnection();
     }
     
+
+    /**
+        Establish connection to FTP server and display files and folders.
+        @return void
+     */
     public void establishConnection() {
         ftp.configure(config);
         boolean error = false;

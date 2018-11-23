@@ -4,6 +4,7 @@ comment1.params=
 comment1.target=FTP_Init()
 comment2.params=
 comment2.target=void\ displayInitWindow()
+comment2.text=\r\n\ \ \ \ \ \ \ \ Display\ init\ window.\r\n\ \ \ \ \ \ \ \ @return\ void\r\n
 comment3.params=e
 comment3.target=void\ actionPerformed(java.awt.event.ActionEvent)
 comment4.params=e

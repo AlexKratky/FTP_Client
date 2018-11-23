@@ -1,3 +1,12 @@
+/**
+ * @name FTP_Init.java
+ * @version v0.1 (19-11-2018)[dd-mm-yyyy]
+ * @link https://alexkratky.cz Author website
+ * @author Alex Kratky <info@alexkratky.cz>
+ * @copyright Copyright (c) 2018 Alex Kratky
+ * @license http://opensource.org/licenses/mit-license.php MIT License
+ * @description Main window.
+ */
 import java.awt.Color;
 import javax.swing.JFrame;
 import java.awt.Container;
@@ -21,6 +30,10 @@ public class FTP_Init {
 
     }
 
+    /**
+        Display init window.
+        @return void
+    */
     public void displayInitWindow() {
         frame = new JFrame("FTP Client");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

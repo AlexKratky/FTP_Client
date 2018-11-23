@@ -1,9 +1,24 @@
+/**
+ * @name MainClass.java
+ * @version v0.1 (23-11-2018)[dd-mm-yyyy]
+ * @link https://alexkratky.cz Author website
+ * @author Alex Kratky <info@alexkratky.cz>
+ * @copyright Copyright (c) 2018 Alex Kratky
+ * @license http://opensource.org/licenses/mit-license.php MIT License
+ * @description Main class of FTP_Client.
+ */
+
 import FTP_Dialog.FTP_Dialog;
 import FTP_Dialog.FTPDataListener;
 import javax.swing.SwingUtilities;
 import CustomComponents.CustomFont;
-public class MainClass
-{
+
+public class MainClass {
+
+    /**
+        Display init window.
+        @return void
+    */
     public static void main(String args[]) {
         CustomFont CF = new CustomFont();
         //CF.registerFont("UbuntuRegular");
@@ -17,6 +32,10 @@ public class MainClass
 
     }
     
+    /**
+        Display FTP_Dialog.
+        @return void
+    */
     public static void displayDialog() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -31,5 +50,9 @@ public class MainClass
         });
     }
     
+    /**
+    Display settings.
+    @return void
+    */
     public static void displaySettings() {}
 }
