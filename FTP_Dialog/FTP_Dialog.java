@@ -1,6 +1,5 @@
 package FTP_Dialog;
 
-
 /**
     * @name        FTP_Dialog.java
     * @version     v0.1 (19-11-2018)[dd-mm-yyyy]
@@ -26,15 +25,14 @@ import CustomComponents.CustomButton;
 import FTP_Dialog.FTPDataListener;
 import Classes.SpringUtilities;
 import java.awt.Toolkit;
-import javax.swing.JOptionPane;
-
+import CustomComponents.CustomDialog;
 
 public class FTP_Dialog {
     private Color foreground = new Color(195, 7, 63);
     private Color background = new Color(26, 26, 29);
     private JFrame frame = null;
     private Container cp = null;
-    
+
     // ActionListener AE
     /**
      * Create and display FTP_Dialog.
@@ -61,7 +59,12 @@ public class FTP_Dialog {
         frame.setResizable(false);
         try {
             frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../img/icon.png")));
-        } catch(Exception e) {System.out.println(e);}
+        } catch (Exception e) {
+             CustomDialog CD = new CustomDialog(frame, "Error", true);
+             CD.setSize(300, 200);
+             CD.setMsg("Failed to load icon - " + e);
+             CD.display();
+        }
         cp = frame.getContentPane();
         cp.setBackground(background);
 
@@ -105,22 +108,24 @@ public class FTP_Dialog {
         ActionListener action = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String server = inputServer.getText();
-                String user = inputUser.getText();
+                String server = inputServer.getText().trim();
+                String user = inputUser.getText().trim();
                 String pass = String.valueOf(inputPass.getPassword());
-                // need try catch or stg?
                 int port = 0;
                 try {
-                    port = Integer.valueOf(inputPort.getText());
+                    port = Integer.valueOf(inputPort.getText().trim());
                 } catch (NumberFormatException nfe) {
-                    
+                    // not valid port
                 }
                 if (server.length() > 0 && user.length() > 0 && port > 0) {
                     ftpDL.dataPerformed(server, user, pass, port);
                     frame.setVisible(false);
                     frame.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Invalid data.", "Error", JOptionPane.ERROR_MESSAGE);
+                    CustomDialog CD = new CustomDialog(frame, "Error", true);
+                    CD.setSize(300, 200);
+                    CD.setMsg("Invalid data.");
+                    CD.display();
                 }
             }
         };

@@ -1,3 +1,4 @@
+
 /**
  * @name FTP_Init.java
  * @version v0.1 (19-11-2018)[dd-mm-yyyy]
@@ -19,21 +20,23 @@ import javax.swing.JPanel;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+//import CustomComponents.CustomDialog;
 
 public class FTP_Init {
     private Color foreground = new Color(195, 7, 63);
     private Color background = new Color(26, 26, 29);
     private JFrame frame = null;
     private Container cp = null;
-    
+
     public FTP_Init() {
 
     }
 
     /**
-        Display init window.
-        @return void
-    */
+     * Display init window.
+     * 
+     * @return void
+     */
     public void displayInitWindow() {
         frame = new JFrame("FTP Client");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,21 +47,21 @@ public class FTP_Init {
         cp = frame.getContentPane();
         cp.setBackground(background);
         cp.setLayout(null);
-        
+
         JLabel title = new JLabel("FTP Client", SwingConstants.CENTER);
         title.setBounds(0, 15, frame.getWidth(), 34);
         title.setFont(new Font("Ubuntu Light", Font.PLAIN, 30));
         title.setForeground(foreground);
-        
+
         JLabel subtitle = new JLabel("Welcome to FTP Client.", SwingConstants.CENTER);
         subtitle.setBounds(0, 60, frame.getWidth(), 24);
         subtitle.setFont(new Font("Ubuntu Light", Font.PLAIN, 20));
         subtitle.setForeground(Color.WHITE);
-        
+
         JPanel bottom = new JPanel();
-        bottom.setLayout(new GridLayout(1,2));
-        bottom.setBounds(0, frame.getHeight() - 80, frame.getWidth(), 51);
-        
+        bottom.setLayout(new GridLayout(1, 2));
+        bottom.setBounds(0, frame.getHeight() - 80, frame.getWidth() - 6, 51);
+
         CustomButton settings = new CustomButton("Settings");
         settings.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -73,13 +76,21 @@ public class FTP_Init {
                 MainClass.displayDialog();
             }
         });
-        
+
         bottom.add(settings);
         bottom.add(connect);
         cp.add(title);
         cp.add(subtitle);
         cp.add(bottom);
         frame.setVisible(true);
+        /*
+         * CustomDialog CD = new CustomDialog(frame); CD.setTitle("testik");
+         * CD.setModal(true); CD.setSize(300, 200); CD.setMsg("xd");
+         * CD.addActionListenerFor(CustomDialog.BUTTON_OK, new ActionListener() { public
+         * void actionPerformed(ActionEvent e) {
+         * System.out.println("BUTTON_OK clicked"); CD.closeDialog();// } });
+         * CD.display();
+         */
     }
-    
+
 }

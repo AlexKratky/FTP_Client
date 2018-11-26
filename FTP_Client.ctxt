@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=FTP_Client
+comment1.params=
+comment1.target=FTP_Client()
+comment2.params=srv\ user\ pass\ port
+comment2.target=void\ connect(java.lang.String,\ java.lang.String,\ java.lang.String,\ int)
+comment2.text=\r\n\ \ \ \ \ \ \ \ Set\ creditials\ and\ display\ GUI.\r\n\ \ \ \ \ \ \ \ @param\ srv\ Adress\ of\ server.\r\n\ \ \ \ \ \ \ \ @param\ user\ FTP\ Username.\r\n\ \ \ \ \ \ \ \ @param\ pass\ FTP\ Password.\r\n\ \ \ \ \ \ \ \ @param\ port\ Port\ of\ server.\r\n\ \ \ \ \ \ \ \ @return\ void\r\n
+comment3.params=
+comment3.target=void\ run()
+comment4.params=
+comment4.target=void\ gui()
+comment4.text=\r\n\ \ \ \ \ \ \ \ Display\ GUI,\ called\ from\ connect().\r\n\ \ \ \ \ \ \ \ @return\ void\r\n
+comment5.params=
+comment5.target=void\ establishConnection()
+comment5.text=\r\n\ \ \ \ \ \ \ \ Establish\ connection\ to\ FTP\ server\ and\ display\ files\ and\ folders.\r\n\ \ \ \ \ \ \ \ @return\ void\r\n
+numComments=6

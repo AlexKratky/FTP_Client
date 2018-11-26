@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=ftp_dialog_test
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+comment2.params=server\ username\ password\ port
+comment2.target=void\ dataPerformed(java.lang.String,\ java.lang.String,\ java.lang.String,\ int)
+comment3.params=server\ username\ password\ port
+comment3.target=void\ connected(java.lang.String,\ java.lang.String,\ java.lang.String,\ int)
+numComments=4

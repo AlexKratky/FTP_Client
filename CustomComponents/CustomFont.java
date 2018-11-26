@@ -15,7 +15,7 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.JOptionPane;
+import CustomComponents.CustomDialog;
 //import java.util.Arrays;
 
 public class CustomFont {
@@ -30,17 +30,23 @@ public class CustomFont {
             System.out.println(F.getAbsolutePath());
             if (!F.exists()) {
                 System.out.println(FontName + " doesnt exists");
-                JOptionPane.showMessageDialog(null, "Missing font: fonts\\" + FontName, "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                CustomDialog CD = new CustomDialog(null, "Error", true);
+                CD.setSize(300, 200);
+                CD.setMsg("Missing font - fonts\\"+FontName+".ttf");
+                CD.display();
 
+            } else {
+                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, F));
             }
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, F));
             // System.out.println(Arrays.toString(ge.getAvailableFontFamilyNames()));
         } catch (IOException | FontFormatException e) {
             // Handle exception
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
+            CustomDialog CD = new CustomDialog(null, "Error", true);
+            CD.setSize(300, 200);
+            CD.setMsg(e.toString());
+            CD.display();
         }
     }
 }
