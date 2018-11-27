@@ -18,16 +18,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class CustomDialog extends JDialog {
-    private JFrame frame = null;
-    private String msg = "";
-    private int w = 300;
-    private int h = 100;
-    private Color foreground = new Color(195, 7, 63);
-    private Color background = new Color(26, 26, 29);
-    private int buttons = 1;
-    private int button_width = 1;
-    private ActionListener but_ok_listener = null;
-    private ActionListener but_cancel_listener = null;
+    protected JFrame frame = null;
+    protected String msg = "";
+    protected int w = 300;
+    protected int h = 100;
+    protected Color foreground = new Color(195, 7, 63);
+    protected Color background = new Color(26, 26, 29);
+    protected int buttons = 1;
+    protected int button_width = 1;
+    protected ActionListener but_ok_listener = null;
+    protected ActionListener but_cancel_listener = null;
     public static final int BUTTON_OK = 1;
     public static final int BUTTON_CANCEL = 2;
     public static final int BUTTON_OK_CANCEL = 3;

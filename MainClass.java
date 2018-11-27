@@ -1,3 +1,4 @@
+
 /**
  * @name MainClass.java
  * @version v0.1 (23-11-2018)[dd-mm-yyyy]
@@ -11,17 +12,20 @@
 import FTP_Dialog.FTP_Dialog;
 import FTP_Dialog.FTPDataListener;
 import javax.swing.SwingUtilities;
+import javax.swing.JFrame;
 import CustomComponents.CustomFont;
+import CustomComponents.SettingsDialog;
 
 public class MainClass {
 
     /**
-        Display init window.
-        @return void
-    */
+     * Display init window.
+     * 
+     * @return void
+     */
     public static void main(String args[]) {
         CustomFont CF = new CustomFont();
-        //CF.registerFont("UbuntuRegular");
+        // CF.registerFont("UbuntuRegular");
         CF.registerFont("UbuntuLight");
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -31,11 +35,12 @@ public class MainClass {
         });
 
     }
-    
+
     /**
-        Display FTP_Dialog.
-        @return void
-    */
+     * Display FTP_Dialog.
+     * 
+     * @return void
+     */
     public static void displayDialog() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -49,10 +54,19 @@ public class MainClass {
             }
         });
     }
-    
+
     /**
-    Display settings.
-    @return void
-    */
-    public static void displaySettings() {}
+     * Display settings.
+     * 
+     * @param parent Parent window of Settings window.
+     * @return void
+     */
+    public static void displaySettings(JFrame parent) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                // could add Button(Settings) transparent background
+                new SettingsDialog(parent);
+            }
+        });
+    }
 }

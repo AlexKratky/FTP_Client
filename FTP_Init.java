@@ -65,7 +65,7 @@ public class FTP_Init {
         CustomButton settings = new CustomButton("Settings");
         settings.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                MainClass.displaySettings();
+                MainClass.displaySettings(frame);
             }
         });
         CustomButton connect = new CustomButton("Connect");
