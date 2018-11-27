@@ -1,5 +1,13 @@
 package CustomComponents;
-
+/**
+ * @name SettingsDialog.java
+ * @version v0.1 (27-11-2018)[dd-mm-yyyy]
+ * @link https://alexkratky.cz Author website
+ * @author Alex Kratky <info@alexkratky.cz>
+ * @copyright Copyright (c) 2018 Alex Kratky
+ * @license http://opensource.org/licenses/mit-license.php MIT License
+ * @description Custom settings dialog.
+ */
 import CustomComponents.CustomDialog;
 import javax.swing.JFrame;
 import java.awt.Container;
