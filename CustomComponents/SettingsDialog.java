@@ -9,6 +9,7 @@ package CustomComponents;
  * @description Custom settings dialog.
  */
 import CustomComponents.CustomDialog;
+import CustomComponents.CustomCheckBoxIcon;
 import javax.swing.JFrame;
 import java.awt.Container;
 import javax.swing.JPanel;
@@ -20,7 +21,9 @@ import Classes.SpringUtilities;
 import CustomComponents.CustomInput;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import java.awt.Color;
 import java.awt.Font;
+import javax.swing.BorderFactory;
 
 public class SettingsDialog extends CustomDialog {
 
@@ -63,13 +66,30 @@ public class SettingsDialog extends CustomDialog {
         labelPassword.setFont(new Font("Ubuntu Light", Font.PLAIN, 20));
         labelPassword.setForeground(foreground);
         p.add(labelPassword);
+        
+        /*
         JCheckBox checkPassword = new JCheckBox("Save password to file");
         checkPassword.setForeground(foreground);
         checkPassword.setBackground(background);
         checkPassword.setFont(new Font("Ubuntu Light", Font.PLAIN, 20));
         labelPassword.setLabelFor(checkPassword);
         p.add(checkPassword);
-
+        */
+        CustomCheckBoxIcon checked = new CustomCheckBoxIcon();
+        CustomCheckBoxIcon unchecked = new CustomCheckBoxIcon();
+        JCheckBox checkPassword = new JCheckBox("", unchecked);
+        checkPassword.setOpaque(false);
+        checkPassword.setFocusPainted(false);
+//        System.out.println(checkPassword.getX() + " "+ checkPassword.getY());
+        checkPassword.setSelectedIcon(checked);
+        labelPassword.setLabelFor(checkPassword);
+        //checkPassword.setLocation(x.getX(), x.getY());
+        checkPassword.setVisible(true);
+        //top-left-bottom-right
+        //checkPassword.setBorder(BorderFactory.createMatteBorder(10, 0, 0, 0, Color.YELLOW));
+        //checkPassword.setBorderPainted(true);
+        p.add(checkPassword);
+        
         p.add(new JLabel("", JLabel.TRAILING));
         CustomButton but_ok = new CustomButton("Save");
         if (but_ok_listener == null) {

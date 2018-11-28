@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=CustomCheckBoxIcon
+comment1.params=component\ g\ x\ y
+comment1.target=void\ paintIcon(java.awt.Component,\ java.awt.Graphics,\ int,\ int)
+comment2.params=
+comment2.target=int\ getIconWidth()
+comment3.params=
+comment3.target=int\ getIconHeight()
+numComments=4
