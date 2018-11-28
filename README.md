@@ -1,7 +1,7 @@
 # FTP Client
 FTP Client written in Java. 
 
-##Documentation
+## Documentation
 [FTP_Client documentation](https://www.bluej.org/)
 
 ## Built With
