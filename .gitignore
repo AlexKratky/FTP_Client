@@ -1,1 +1,4 @@
-*.bluej, *.ctxt, *.class, .vscode/
+*.bluej
+*.ctxt
+*.class
+.vscode/
