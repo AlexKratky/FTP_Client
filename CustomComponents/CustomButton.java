@@ -20,8 +20,19 @@ import java.awt.event.MouseEvent;
 import javax.swing.DefaultButtonModel;
 
 public class CustomButton extends JButton {
+    /**
+     * Color of foreground.
+     */
     private Color foreground = new Color(195, 7, 63);
+
+    /**
+     * Color of background.
+     */
     private Color background = new Color(26, 26, 29);
+
+    /**
+     * Padding of text in button.
+     */
     private int padding = 12;
 
     /**

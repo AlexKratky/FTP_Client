@@ -1,4 +1,5 @@
 package CustomComponents;
+
 /**
  * @name SettingsDialog.java
  * @version v0.1 (27-11-2018)[dd-mm-yyyy]
@@ -29,6 +30,7 @@ public class SettingsDialog extends CustomDialog {
 
     /**
      * Create instance of SettingsDialog by specifing parent window.
+     * 
      * @param frame Parent window.
      */
     public SettingsDialog(JFrame frame) {
@@ -66,42 +68,40 @@ public class SettingsDialog extends CustomDialog {
         labelPassword.setFont(new Font("Ubuntu Light", Font.PLAIN, 20));
         labelPassword.setForeground(foreground);
         p.add(labelPassword);
-        
+
         /*
-        JCheckBox checkPassword = new JCheckBox("Save password to file");
-        checkPassword.setForeground(foreground);
-        checkPassword.setBackground(background);
-        checkPassword.setFont(new Font("Ubuntu Light", Font.PLAIN, 20));
-        labelPassword.setLabelFor(checkPassword);
-        p.add(checkPassword);
-        */
+         * JCheckBox checkPassword = new JCheckBox("Save password to file");
+         * checkPassword.setForeground(foreground);
+         * checkPassword.setBackground(background); checkPassword.setFont(new
+         * Font("Ubuntu Light", Font.PLAIN, 20));
+         * labelPassword.setLabelFor(checkPassword); p.add(checkPassword);
+         */
         CustomCheckBoxIcon checked = new CustomCheckBoxIcon();
         CustomCheckBoxIcon unchecked = new CustomCheckBoxIcon();
         JCheckBox checkPassword = new JCheckBox("", unchecked);
         checkPassword.setOpaque(false);
         checkPassword.setFocusPainted(false);
-//        System.out.println(checkPassword.getX() + " "+ checkPassword.getY());
+        // System.out.println(checkPassword.getX() + " "+ checkPassword.getY());
         checkPassword.setSelectedIcon(checked);
         labelPassword.setLabelFor(checkPassword);
-        //checkPassword.setLocation(x.getX(), x.getY());
+        // checkPassword.setLocation(x.getX(), x.getY());
         checkPassword.setVisible(true);
-        //top-left-bottom-right
-        //checkPassword.setBorder(BorderFactory.createMatteBorder(10, 0, 0, 0, Color.YELLOW));
-        //checkPassword.setBorderPainted(true);
+        // top-left-bottom-right
+        // checkPassword.setBorder(BorderFactory.createMatteBorder(10, 0, 0, 0,
+        // Color.YELLOW));
+        // checkPassword.setBorderPainted(true);
         p.add(checkPassword);
-        
+
         p.add(new JLabel("", JLabel.TRAILING));
         CustomButton but_ok = new CustomButton("Save");
-        if (but_ok_listener == null) {
-            but_ok.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    setVisible(false);
-                    dispose();
-                }
-            });
-        } else {
-            but_ok.addActionListener(but_ok_listener);
-        }
+        but_ok.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(checkPassword.isSelected());
+                System.out.println(inputName.getText());
+                setVisible(false);
+                dispose();
+            }
+        });
         p.add(but_ok);
         SpringUtilities.makeCompactGrid(p, 3, 2, // rows, cols
                 6, 6, // initX, initY

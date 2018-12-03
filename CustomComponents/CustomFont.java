@@ -21,6 +21,7 @@ import CustomComponents.CustomDialog;
 public class CustomFont {
 
     /**
+     * Method will register a font to GraphicsEnvironment
      * @param FontName Name of font located at ./fonts/. Do not include extension.
      * @return void
      */

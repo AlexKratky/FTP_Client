@@ -18,9 +18,20 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Insets;
 
 public class CustomInputPassword extends JPasswordField {
+    /**
+     * Color of foreground.
+     */
     private Color foreground = new Color(195, 7, 63);
+
+    /**
+     * Color of background.
+     */
     private Color background = new Color(26, 26, 29);
-    int padding = 8;
+
+    /**
+     * Default text padding.
+     */
+    private int padding = 8;
 
     /**
      * Create custom input password with default values

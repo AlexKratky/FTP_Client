@@ -23,9 +23,24 @@ import java.awt.event.ActionEvent;
 //import CustomComponents.CustomDialog;
 
 public class FTP_Init {
+    /**
+     * Color of foreground.
+     */
     private Color foreground = new Color(195, 7, 63);
+
+    /**
+     * Color of background.
+     */
     private Color background = new Color(26, 26, 29);
+
+    /**
+     * JFrame reference.
+     */
     private JFrame frame = null;
+
+    /**
+     * Container reference.
+     */
     private Container cp = null;
 
     public FTP_Init() {

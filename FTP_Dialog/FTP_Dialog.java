@@ -28,12 +28,26 @@ import java.awt.Toolkit;
 import CustomComponents.CustomDialog;
 
 public class FTP_Dialog {
+    /**
+     * Color of foreground.
+     */
     private Color foreground = new Color(195, 7, 63);
+
+    /**
+     * Color of background.
+     */
     private Color background = new Color(26, 26, 29);
+
+    /**
+     * JFrame reference.
+     */
     private JFrame frame = null;
+
+    /**
+     * Container reference.
+     */
     private Container cp = null;
 
-    // ActionListener AE
     /**
      * Create and display FTP_Dialog.
      * 
@@ -60,10 +74,10 @@ public class FTP_Dialog {
         try {
             frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("../img/icon.png")));
         } catch (Exception e) {
-             CustomDialog CD = new CustomDialog(frame, "Error", true);
-             CD.setSize(300, 200);
-             CD.setMsg("Failed to load icon - " + e);
-             CD.display();
+            CustomDialog CD = new CustomDialog(frame, "Error", true);
+            CD.setSize(300, 200);
+            CD.setMsg("Failed to load icon - " + e);
+            CD.display();
         }
         cp = frame.getContentPane();
         cp.setBackground(background);

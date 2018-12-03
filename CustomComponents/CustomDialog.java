@@ -28,20 +28,79 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class CustomDialog extends JDialog {
+    /**
+     * JFrame reference.
+     */
     protected JFrame frame = null;
+
+    /**
+     * Default message.
+     */
     protected String msg = "";
+
+    /**
+     * Default window width.
+     */
     protected int w = 300;
+
+    /**
+     * Default window height.
+     */
     protected int h = 100;
+
+    /**
+     * Color of foreground.
+     */
     protected Color foreground = new Color(195, 7, 63);
+
+    /**
+     * Color of background.
+     */
     protected Color background = new Color(26, 26, 29);
+
+    /**
+     * Default button(s) (BUTTON_OK)
+     */
     protected int buttons = 1;
+
+    /**
+     * Default single button width (BUTTON_FULL_WIDTH)
+     */
     protected int button_width = 1;
+
+    /**
+     * OK button listener.
+     */
     protected ActionListener but_ok_listener = null;
+
+    /**
+     * CANCEL button listener.
+     */
     protected ActionListener but_cancel_listener = null;
+
+    /**
+     * Specify the button - OK button.
+     */
     public static final int BUTTON_OK = 1;
+
+    /**
+     * Specify the button - CANCEL button.
+     */
     public static final int BUTTON_CANCEL = 2;
+
+    /**
+     * Specify buttons - OK & CANCEL buttons.
+     */
     public static final int BUTTON_OK_CANCEL = 3;
+
+    /**
+     * Specify that the single button will have full width.
+     */
     public static final int BUTTON_FULL_WIDTH = 1;
+
+    /**
+     * Specify that the single button will have half width and will be centered.
+     */
     public static final int BUTTON_HALF_WIDTH = 2;
 
     /**
