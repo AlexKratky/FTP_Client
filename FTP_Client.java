@@ -87,7 +87,7 @@ public class FTP_Client {
      * @return void
      */
     public void connect(String srv, String user, String pass, int port) {
-        System.out.println(srv + " / " + user + " / " + pass + " / " + port);
+        //System.out.println(srv + " / " + user + " / " + pass + " / " + port);
         this.server = srv;
         this.user = user;
         this.pass = pass;
