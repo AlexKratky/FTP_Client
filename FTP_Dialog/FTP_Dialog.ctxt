@@ -1,11 +1,10 @@
 #BlueJ class context
-comment0.target=FTP_Dialog
+comment0.params=ftpDL
+comment0.target=FTP_Dialog(FTPDataListener)
+comment0.text=\r\n\ Create\ and\ display\ FTP_Dialog.\r\n\ \r\n\ @param\ ftpDL\ ftpDataListener\ to\ retrive\ data.\r\n
 comment1.params=ftpDL
-comment1.target=FTP_Dialog(FTPDataListener)
-comment1.text=\r\n\ Create\ and\ display\ FTP_Dialog.\r\n\ \r\n\ @param\ ftpDL\ ftpDataListener\ to\ retrive\ data.\r\n
-comment2.params=ftpDL
-comment2.target=void\ createDialog(FTPDataListener)
-comment2.text=\r\n\ Method\ to\ create\ dialog,\ called\ from\ constructor.\r\n\ \r\n\ @param\ ftpDL\ ftpDataListener\ to\ retrive\ data.\ Inluded\ from\ constructor\r\n\ @return\ void\r\n
-comment3.params=e
-comment3.target=void\ actionPerformed(java.awt.event.ActionEvent)
-numComments=4
+comment1.target=void\ createDialog(FTPDataListener)
+comment1.text=\r\n\ Method\ to\ create\ dialog,\ called\ from\ constructor.\r\n\ \r\n\ @param\ ftpDL\ ftpDataListener\ to\ retrive\ data.\ Inluded\ from\ constructor\r\n\ @return\ void\r\n
+comment2.params=e
+comment2.target=void\ actionPerformed(java.awt.event.ActionEvent)
+numComments=3

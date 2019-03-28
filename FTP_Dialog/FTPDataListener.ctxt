@@ -1,7 +1,5 @@
 #BlueJ class context
-comment0.target=FTPDataListener
-comment0.text=\r\n\ @name\ ftpDataListener.java\r\n\ @version\ v0.1\ (19-11-2018)[dd-mm-yyyy]\r\n\ @link\ https\://alexkratky.cz\ Author\ website\r\n\ @author\ Alex\ Kratky\ <info@alexkratky.cz>\r\n\ @copyright\ Copyright\ (c)\ 2018\ Alex\ Kratky\r\n\ @license\ http\://opensource.org/licenses/mit-license.php\ MIT\ License\r\n\ @description\ FTP\ Data\ Listener\ interface.\r\n
-comment1.params=server\ username\ password\ port
-comment1.target=void\ dataPerformed(java.lang.String,\ java.lang.String,\ java.lang.String,\ int)
-comment1.text=\r\n\ Method\ called\ when\ FTP_Dialog\ return\ data.\ Data\ should\ be\ valid,\ server\ and\r\n\ username\ will\ never\ be\ empty,\ password\ can\ be\ empty\ or\ filled\ and\ port\ is\r\n\ only\ numeric\ higher\ than\ 0.\r\n\ \r\n\ @param\ server\ \ \ Server\ address\ of\ FTP.\r\n\ @param\ username\ Username\ to\ FTP.\r\n\ @param\ password\ Password\ of\ user.\r\n\ @param\ port\ \ \ \ \ Port\ of\ FTP\ server.\r\n\ @return\ void\r\n
-numComments=2
+comment0.params=server\ username\ password\ port
+comment0.target=void\ dataPerformed(java.lang.String,\ java.lang.String,\ java.lang.String,\ int)
+comment0.text=\r\n\ Method\ called\ when\ FTP_Dialog\ return\ data.\ Data\ should\ be\ valid,\ server\ and\r\n\ username\ will\ never\ be\ empty,\ password\ can\ be\ empty\ or\ filled\ and\ port\ is\r\n\ only\ numeric\ higher\ than\ 0.\r\n\ \r\n\ @param\ server\ \ \ Server\ address\ of\ FTP.\r\n\ @param\ username\ Username\ to\ FTP.\r\n\ @param\ password\ Password\ of\ user.\r\n\ @param\ port\ \ \ \ \ Port\ of\ FTP\ server.\r\n\ @return\ void\r\n
+numComments=1

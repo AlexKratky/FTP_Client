@@ -1,12 +1,11 @@
 #BlueJ class context
-comment0.target=FTP_Init
+comment0.params=
+comment0.target=FTP_Init()
 comment1.params=
-comment1.target=FTP_Init()
-comment2.params=
-comment2.target=void\ displayInitWindow()
-comment2.text=\r\n\ Display\ init\ window.\r\n\ \r\n\ @return\ void\r\n
+comment1.target=void\ displayInitWindow()
+comment1.text=\r\n\ Display\ init\ window.\r\n\ \r\n\ @return\ void\r\n
+comment2.params=e
+comment2.target=void\ actionPerformed(java.awt.event.ActionEvent)
 comment3.params=e
 comment3.target=void\ actionPerformed(java.awt.event.ActionEvent)
-comment4.params=e
-comment4.target=void\ actionPerformed(java.awt.event.ActionEvent)
-numComments=5
+numComments=4

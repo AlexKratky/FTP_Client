@@ -20,6 +20,11 @@ import javax.swing.JPanel;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.FileNotFoundException;
 //import CustomComponents.CustomDialog;
 
 public class FTP_Init {
@@ -68,7 +73,29 @@ public class FTP_Init {
         title.setFont(new Font("Ubuntu Light", Font.PLAIN, 30));
         title.setForeground(foreground);
 
-        JLabel subtitle = new JLabel("Welcome to FTP Client.", SwingConstants.CENTER);
+        Properties prop = new Properties();
+        InputStream input = null;
+        String configName = "";
+        try {
+    		input = new FileInputStream("config.properties");
+    		prop.load(input);
+    
+    		configName = prop.getProperty("name");
+    	} catch (IOException ex) {
+    		//ex.printStackTrace();
+    	} finally {
+    		if (input != null) {
+    			try {
+    				input.close();
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}
+        
+        
+        System.out.println("configName " + configName);
+        JLabel subtitle = new JLabel("Welcome to FTP Client" + ((configName != null && configName.length() > 0) ? (", " + configName) : "") + ".", SwingConstants.CENTER);
         subtitle.setBounds(0, 60, frame.getWidth(), 24);
         subtitle.setFont(new Font("Ubuntu Light", Font.PLAIN, 20));
         subtitle.setForeground(Color.WHITE);

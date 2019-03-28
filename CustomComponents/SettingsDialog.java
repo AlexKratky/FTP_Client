@@ -25,6 +25,13 @@ import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.BorderFactory;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
 
 public class SettingsDialog extends CustomDialog {
 
@@ -55,13 +62,39 @@ public class SettingsDialog extends CustomDialog {
         cp.setLayout(new SpringLayout());
         JPanel p = new JPanel(new SpringLayout());
         p.setBackground(background);
-
+        
+        Properties prop = new Properties();
+        InputStream input = null;
+        String configName = "";
+        boolean configRemember = false;
+        try {
+    		input = new FileInputStream("config.properties");
+    		prop.load(input);
+    
+    		configName = prop.getProperty("name");
+    		if(configName == null) configName="";
+    		configRemember = ((prop.getProperty("remember") != null && prop.getProperty("remember").equals("true")) ? true : false);
+    		System.out.println("configRemember: " + prop.getProperty("remember"));
+    	} catch (IOException ex) {
+    		//ex.printStackTrace();
+    	} finally {
+    		if (input != null) {
+    			try {
+    				input.close();
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}
+        
+        
         JLabel labelName = new JLabel("Your name ", JLabel.TRAILING);
         labelName.setFont(new Font("Ubuntu Light", Font.PLAIN, 20));
         labelName.setForeground(foreground);
         p.add(labelName);
         CustomInput inputName = new CustomInput();
         labelName.setLabelFor(inputName);
+        inputName.setText(configName);
         p.add(inputName);
 
         JLabel labelPassword = new JLabel("Password ", JLabel.TRAILING);
@@ -79,6 +112,7 @@ public class SettingsDialog extends CustomDialog {
         CustomCheckBoxIcon checked = new CustomCheckBoxIcon();
         CustomCheckBoxIcon unchecked = new CustomCheckBoxIcon();
         JCheckBox checkPassword = new JCheckBox("", unchecked);
+        checkPassword.setSelected(configRemember);
         checkPassword.setOpaque(false);
         checkPassword.setFocusPainted(false);
         // System.out.println(checkPassword.getX() + " "+ checkPassword.getY());
@@ -98,6 +132,29 @@ public class SettingsDialog extends CustomDialog {
             public void actionPerformed(ActionEvent e) {
                 System.out.println(checkPassword.isSelected());
                 System.out.println(inputName.getText());
+                
+                Properties prop = new Properties();
+                OutputStream output = null;
+                try {
+                    output = new FileOutputStream("config.properties");
+                    
+                    prop.setProperty("name", inputName.getText());
+                    prop.setProperty("remember", checkPassword.isSelected() + "");
+            
+                    prop.store(output, null);
+                } catch (IOException io) {
+                    io.printStackTrace();
+                } finally {
+                    if (output != null) {
+                        try {
+                            output.close();
+                        } catch (IOException err) {
+                            err.printStackTrace();
+                        }
+                    }
+                }
+                
+                
                 setVisible(false);
                 dispose();
             }

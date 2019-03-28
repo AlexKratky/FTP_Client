@@ -26,6 +26,16 @@ import FTP_Dialog.FTPDataListener;
 import Classes.SpringUtilities;
 import java.awt.Toolkit;
 import CustomComponents.CustomDialog;
+import java.io.IOException;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import CustomComponents.CustomPassword;
+import java.nio.charset.StandardCharsets;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class FTP_Dialog {
     /**
@@ -42,12 +52,16 @@ public class FTP_Dialog {
      * JFrame reference.
      */
     private JFrame frame = null;
+    
+    private boolean rememberPassword = false;
 
     /**
      * Container reference.
      */
     private Container cp = null;
 
+    private byte[] encryptionKey = "qd602MgGnjtSbspf".getBytes(StandardCharsets.UTF_8);
+    
     /**
      * Create and display FTP_Dialog.
      * 
@@ -79,6 +93,26 @@ public class FTP_Dialog {
             CD.setMsg("Failed to load icon - " + e);
             CD.display();
         }
+        
+        Properties prop = new Properties();
+        InputStream input = null;
+        try {
+            input = new FileInputStream("config.properties");
+            prop.load(input);
+    
+            rememberPassword = (prop.getProperty("remember").equals("true") ? true : false);
+        } catch (IOException ex) {
+            //ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        
         cp = frame.getContentPane();
         cp.setBackground(background);
 
@@ -87,13 +121,43 @@ public class FTP_Dialog {
 
         JPanel p = new JPanel(new SpringLayout());
         p.setBackground(background);
-
+        
+        prop = new Properties();
+        input = null;
+        String configServer = "";
+        String configUsername = "";
+        String configPassword = "";
+        String configPort = "";
+        try {
+            input = new FileInputStream("credentials.properties");
+            prop.load(input);
+    
+            configServer = prop.getProperty("server");
+            configUsername = prop.getProperty("username");
+            configPort = prop.getProperty("port");
+            configPassword = prop.getProperty("password");
+            if(configPassword != null && configPassword.length() > 0) {
+                configPassword = CustomPassword.decrypt(configPassword);
+            }
+        } catch (IOException ex) {
+            //ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        
         JLabel labelServer = new JLabel("Server ", JLabel.TRAILING);
         labelServer.setFont(new Font("Ubuntu Light", Font.PLAIN, 20));
         labelServer.setForeground(foreground);
         p.add(labelServer);
         CustomInput inputServer = new CustomInput();
         labelServer.setLabelFor(inputServer);
+        inputServer.setText(configServer);
         p.add(inputServer);
 
         JLabel labelUser = new JLabel("User ", JLabel.TRAILING);
@@ -102,6 +166,7 @@ public class FTP_Dialog {
         p.add(labelUser);
         CustomInput inputUser = new CustomInput();
         labelUser.setLabelFor(inputUser);
+        inputUser.setText(configUsername);
         p.add(inputUser);
 
         JLabel labelPass = new JLabel("Password ", JLabel.TRAILING);
@@ -110,6 +175,8 @@ public class FTP_Dialog {
         p.add(labelPass);
         CustomInputPassword inputPass = new CustomInputPassword();
         labelPass.setLabelFor(inputPass);
+        if(rememberPassword)
+            inputPass.setText(configPassword);
         p.add(inputPass);
 
         JLabel labelPort = new JLabel("Port ", JLabel.TRAILING);
@@ -118,6 +185,7 @@ public class FTP_Dialog {
         p.add(labelPort);
         CustomInput inputPort = new CustomInput("21");
         labelPort.setLabelFor(inputPort);
+        inputPort.setText(configPort);
         p.add(inputPort);
         ActionListener action = new ActionListener() {
             @Override
@@ -132,6 +200,30 @@ public class FTP_Dialog {
                     // not valid port
                 }
                 if (server.length() > 0 && user.length() > 0 && port > 0) {
+                    
+                    Properties prop = new Properties();
+                    OutputStream output = null;
+                    try {
+                        output = new FileOutputStream("credentials.properties");
+                       
+                        prop.setProperty("server", server);
+                        prop.setProperty("username", user);
+                        prop.setProperty("port", inputPort.getText().trim());
+                        if(rememberPassword)
+                            prop.setProperty("password", CustomPassword.encrypt(pass));
+                        prop.store(output, null);
+                    } catch (IOException io) {
+                        io.printStackTrace();
+                    } finally {
+                        if (output != null) {
+                            try {
+                                output.close();
+                            } catch (IOException err) {
+                                err.printStackTrace();
+                            }
+                        }
+                    }
+                    
                     ftpDL.dataPerformed(server, user, pass, port);
                     frame.setVisible(false);
                     frame.dispose();

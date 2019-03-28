@@ -1,6 +1,5 @@
 #BlueJ class context
-comment0.target=CustomFont
-comment1.params=FontName
-comment1.target=void\ registerFont(java.lang.String)
-comment1.text=\r\n\ @param\ FontName\ Name\ of\ font\ located\ at\ ./fonts/.\ Do\ not\ include\ extension.\r\n\ @return\ void\r\n
-numComments=2
+comment0.params=FontName
+comment0.target=void\ registerFont(java.lang.String)
+comment0.text=\r\n\ Method\ will\ register\ a\ font\ to\ GraphicsEnvironment\r\n\ @param\ FontName\ Name\ of\ font\ located\ at\ ./fonts/.\ Do\ not\ include\ extension.\r\n\ @return\ void\r\n
+numComments=1
