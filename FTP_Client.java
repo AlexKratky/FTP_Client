@@ -32,6 +32,8 @@ import org.apache.commons.net.ftp.FTPFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
+import CustomComponents.CustomFileChooser;
+import javax.swing.UIManager;
 
 public class FTP_Client {
     /**
@@ -124,7 +126,10 @@ public class FTP_Client {
         }
         cp = frame.getContentPane();
         cp.setBackground(background);
+        UIManager.put("Menu.font", new Font("Ubuntu Light", Font.PLAIN, 14));
+        UIManager.put("MenuItem.font", new Font("Ubuntu Light", Font.PLAIN, 14));
         JMenuBar JMB = new JMenuBar();
+        //JMB.setFont(new Font("Ubuntu Light", Font.PLAIN, 14));
         // JMB.setBackground(background);
         // JMB.setForeground(foreground);
         JMenu JM1 = new JMenu("File");
@@ -157,6 +162,7 @@ public class FTP_Client {
         JMB.add(status);
 
         files = new JList(filesModel);
+        files.setFont(new Font("Ubuntu Light", Font.PLAIN, 14));
         files.setBackground(background);
         files.setForeground(foreground);
 
@@ -223,35 +229,37 @@ public class FTP_Client {
     }
     
     public void upload() {
-        JFileChooser fc = new JFileChooser();
-        int returnVal = fc.showOpenDialog(null);
-
+        CustomFileChooser fc = new CustomFileChooser();
+        fc.setMultiSelectionEnabled(true);
+        int returnVal = fc.showOpenDialog(frame);
+        
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            //This is where a real application would open the file.
-            if (file.exists()) {
-                System.out.println("Soubor existuje");
-            }
-            
-            try {
-                FileInputStream targetStream = new FileInputStream(file);
-                System.out.println("Opening: " + file.getName() + ".");
-                
-                Thread uploadThread = new Thread(new Runnable() {
-                    @Override
+            Thread uploadThread = new Thread(new Runnable() {
+                @Override
                     public void run() {
-                        try {
-                            ftp.storeFile(path + file.getName(), targetStream);
-                            refresh();
-                        } catch (IOException IOE) {
-                            System.out.println(IOE);
+                    File[] selectedFiles = fc.getSelectedFiles();
+                    //This is where a real application would open the file.
+                    for(File file : selectedFiles) {
+                        if (file.exists()) {
+                            System.out.println("Soubor existuje");
                         }
+                        try {
+                            FileInputStream targetStream = new FileInputStream(file);
+                            System.out.println("Opening: " + file.getName() + ".");
+                            
+                           
+                            ftp.storeFile(path + file.getName(), targetStream);
+                   
+                                    
+                        } catch (IOException err) {
+                            System.out.println("File doesnt exists " + err);
+                        }
+                        
                     }
-                });  
-                uploadThread.start();
-            } catch (IOException err) {
-                System.out.println("File doesnt exists " + err);
-            }
+                    refresh();
+                }
+            });  
+            uploadThread.start();
         } else {
             System.out.println("Open command cancelled by user.");
         }
