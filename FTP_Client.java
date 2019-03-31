@@ -21,11 +21,17 @@ import javax.swing.DefaultListModel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JFileChooser;
+import java.io.File;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPFile;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.FileInputStream;
 
 public class FTP_Client {
     /**
@@ -70,6 +76,7 @@ public class FTP_Client {
 
     private DefaultListModel filesModel = new DefaultListModel();
     private JList files;
+    private String path = "/";
     private FTPClient ftp = new FTPClient();
     private FTPClientConfig config = new FTPClientConfig();
 
@@ -122,7 +129,31 @@ public class FTP_Client {
         // JMB.setForeground(foreground);
         JMenu JM1 = new JMenu("File");
         JMB.add(JM1);
-        JMenuItem status = new JMenuItem("Connecting ...");
+        JMenuItem upload = new JMenuItem("Upload");
+        upload.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                upload();
+            }
+        });
+        JM1.add(upload);
+        
+        JMenuItem refresh = new JMenuItem("Refresh");
+        refresh.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                refresh();
+            }
+        });
+        JM1.add(refresh);
+        
+        JMenuItem delete = new JMenuItem("Delete selected items");
+        delete.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                delete();
+            }
+        });
+        JM1.add(delete);
+
+        JMenuItem status = new JMenuItem("...");
         JMB.add(status);
 
         files = new JList(filesModel);
@@ -175,19 +206,88 @@ public class FTP_Client {
                 }
             }
 
-            ftp.logout();
+            //ftp.logout();
         } catch (IOException e) {
             error = true;
             e.printStackTrace();
         } finally {
             if (ftp.isConnected()) {
-                try {
-                    ftp.disconnect();
+                /*try {
+                    //ftp.disconnect();
                 } catch (IOException ioe) {
                     // do nothing
-                }
+                }*/
             }
             // System.exit(error ? 1 : 0);
+        }
+    }
+    
+    public void upload() {
+        JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showOpenDialog(null);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            //This is where a real application would open the file.
+            if (file.exists()) {
+                System.out.println("Soubor existuje");
+            }
+            
+            try {
+                FileInputStream targetStream = new FileInputStream(file);
+                System.out.println("Opening: " + file.getName() + ".");
+                
+                Thread uploadThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            ftp.storeFile(path + file.getName(), targetStream);
+                            refresh();
+                        } catch (IOException IOE) {
+                            System.out.println(IOE);
+                        }
+                    }
+                });  
+                uploadThread.start();
+            } catch (IOException err) {
+                System.out.println("File doesnt exists " + err);
+            }
+        } else {
+            System.out.println("Open command cancelled by user.");
+        }
+    }
+    
+    public void refresh() {
+        try {
+            String f[] = ftp.listNames(path);
+            filesModel.removeAllElements();
+            for (int i = 0; i < f.length; i++) {
+                System.out.println(f[i]);
+                filesModel.insertElementAt(f[i], i);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void delete() {
+        try {
+            /*String f[] = ftp.listNames(path);
+            filesModel.removeAllElements();
+            for (int i = 0; i < f.length; i++) {
+                System.out.println(f[i]);
+                filesModel.insertElementAt(f[i], i);
+            }*/
+           
+            int[] selected = files.getSelectedIndices();      
+            Object[] selectedItems = files.getSelectedValues();
+            for (int i = 0; i < selected.length; i++) {
+                //filesModel.remove(selected);
+                ftp.deleteFile(selectedItems[i].toString());
+            }
+            refresh();
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 }
