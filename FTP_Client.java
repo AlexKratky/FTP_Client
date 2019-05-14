@@ -34,6 +34,11 @@ import java.io.InputStream;
 import java.io.FileInputStream;
 import CustomComponents.CustomFileChooser;
 import javax.swing.UIManager;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 public class FTP_Client {
     /**
@@ -81,7 +86,8 @@ public class FTP_Client {
     private String path = "/";
     private FTPClient ftp = new FTPClient();
     private FTPClientConfig config = new FTPClientConfig();
-
+    private JMenuItem status;
+    
     public FTP_Client() {
 
     }
@@ -150,6 +156,14 @@ public class FTP_Client {
         });
         JM1.add(refresh);
         
+        JMenuItem mainDir = new JMenuItem("Go to /");
+        mainDir.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                list("/");
+            }
+        });
+        JM1.add(mainDir);
+        
         JMenuItem delete = new JMenuItem("Delete selected items");
         delete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -157,15 +171,45 @@ public class FTP_Client {
             }
         });
         JM1.add(delete);
+        
+        JMenuItem reestablish = new JMenuItem("Reestablish connection");
+        reestablish.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                establishConnection();
+            }
+        });
+        JM1.add(reestablish);
 
-        JMenuItem status = new JMenuItem("...");
+        status = new JMenuItem(path);
         JMB.add(status);
 
         files = new JList(filesModel);
         files.setFont(new Font("Ubuntu Light", Font.PLAIN, 14));
         files.setBackground(background);
         files.setForeground(foreground);
-
+        
+        files.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList list = (JList)evt.getSource();
+                if (evt.getClickCount() == 2) {
+                    int index = list.locationToIndex(evt.getPoint());
+                    System.out.println("Index: " + index);
+                    System.out.println("Value: " + files.getModel().getElementAt(index));
+                    String p = (String) files.getModel().getElementAt(index);
+                    list(p+"/", true);
+                }
+            }
+        });
+        
+        files.addKeyListener(new KeyAdapter() {
+           public void keyReleased(KeyEvent ke) {
+                if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String p = (String) files.getSelectedValue();
+                    list(p+"/", true);
+                }
+           }
+        });
+        
         frame.setJMenuBar(JMB);
         cp.add(files);
         frame.setVisible(true);
@@ -204,12 +248,7 @@ public class FTP_Client {
                 System.exit(1);
             } else {
                 System.out.println("Connected");
-                String f[] = ftp.listNames("/");
-                filesModel.removeAllElements();
-                for (int i = 0; i < f.length; i++) {
-                    System.out.println(f[i]);
-                    filesModel.insertElementAt(f[i], i);
-                }
+                list(path);
             }
 
             //ftp.logout();
@@ -228,6 +267,57 @@ public class FTP_Client {
         }
     }
     
+    public void list(String path, boolean combine) {
+        if(path.equals("./")) {
+            System.out.println("Path is equal to .");
+            list(this.path);
+        } else if(path.equals("../")) {
+            
+            System.out.println("Path is equal to ..");
+            if(this.path.equals("/")) {
+                return;
+            }
+            String p[] = this.path.split("/");
+            /*for(String a:p) 
+                System.out.println(a);*/
+            String newPath = "";
+            for(int i = 0; i < (p.length-1); i++) {
+                newPath = newPath + p[i] + "/";
+            }
+            System.out.println("New path: " + newPath);
+            list(newPath);
+        } else
+            list(this.path + path); 
+    }
+    
+    public void list(String path) {
+        //path = path.replaceAll("/+", "/");
+        try {
+            if(ftp.cwd(path)==550){
+                 System.out.println("Directory Doesn't Exists");
+                 return;
+            }else if(ftp.cwd(path)==250){
+                 System.out.println("Directory Exists");
+            }else{
+                 System.out.println("Unknown Status");
+            }
+            this.path = path;
+            status.setText(path);
+            System.out.println("Current path: " + path); 
+        
+            String f[] = ftp.listNames(path);
+            Arrays.sort(f);
+            f = Arrays.copyOfRange(f, 1, f.length);
+            filesModel.removeAllElements();
+            for (int i = 0; i < f.length; i++) {
+                System.out.println(f[i]);
+                filesModel.insertElementAt(f[i].replace(path, ""), i);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+    }
+    
     public void upload() {
         CustomFileChooser fc = new CustomFileChooser();
         fc.setMultiSelectionEnabled(true);
@@ -238,7 +328,6 @@ public class FTP_Client {
                 @Override
                     public void run() {
                     File[] selectedFiles = fc.getSelectedFiles();
-                    //This is where a real application would open the file.
                     for(File file : selectedFiles) {
                         if (file.exists()) {
                             System.out.println("Soubor existuje");
@@ -266,7 +355,7 @@ public class FTP_Client {
     }
     
     public void refresh() {
-        try {
+        /*try {
             String f[] = ftp.listNames(path);
             filesModel.removeAllElements();
             for (int i = 0; i < f.length; i++) {
@@ -275,7 +364,8 @@ public class FTP_Client {
             }
         } catch (Exception e) {
             System.out.println(e);
-        }
+        }*/
+        list(path);
     }
     
     public void delete() {
