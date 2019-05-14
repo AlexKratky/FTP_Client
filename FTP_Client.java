@@ -29,6 +29,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTP;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
@@ -39,6 +40,17 @@ import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import javax.swing.JPopupMenu;
+import java.io.OutputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import CustomComponents.CustomDialog;
+import org.apache.commons.net.ftp.FTPConnectionClosedException;
+import java.net.SocketException;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Date;
+import CustomComponents.CustomPromptDialog;
 
 public class FTP_Client {
     /**
@@ -179,6 +191,38 @@ public class FTP_Client {
             }
         });
         JM1.add(reestablish);
+        
+        JMenuItem download = new JMenuItem("Download files");
+        download.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                download();
+            }
+        });
+        JM1.add(download);
+
+        JMenuItem rename = new JMenuItem("Rename files");
+        rename.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                rename();
+            }
+        });
+        JM1.add(rename);
+        
+        JMenuItem details = new JMenuItem("View details");
+        details.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                details();
+            }
+        });
+        JM1.add(details);
+        
+        JMenuItem dir = new JMenuItem("Create directory");
+        dir.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                createDirectory();
+            }
+        });
+        JM1.add(dir);
 
         status = new JMenuItem(path);
         JMB.add(status);
@@ -200,6 +244,32 @@ public class FTP_Client {
                 }
             }
         });
+        
+        /*JPopupMenu popup = new JPopupMenu();
+        popup.add(new JMenuItem("Hello World"));
+        files.setComponentPopupMenu(popup);
+        */
+        /*
+        JPopupMenu popupMenu = new JPopupMenu();
+          popupMenu.add(new JMenuItem("PopupItem 1"));
+          popupMenu.add(new JMenuItem("PopupItem 2"));
+          popupMenu.add(new JPopupMenu.Separator());
+          popupMenu.add(new JMenuItem("PopupItem 3"));
+      
+          files.addMouseListener(new MouseAdapter() {
+             public void mouseClicked(MouseEvent me) {
+                JList list = (JList)me.getSource();
+                int row = list.locationToIndex(me.getPoint());
+                list.setSelectedIndex(row);
+                if (SwingUtilities.isRightMouseButton(me)    // if right mouse button clicked
+                      && !files.isSelectionEmpty()            // and list selection is not empty
+                      && files.locationToIndex(me.getPoint()) // and clicked point is
+                         == files.getSelectedIndex()) {       //   inside selected item bounds
+                   popupMenu.show(files, me.getX(), me.getY());
+                }
+             }
+          });
+        */
         
         files.addKeyListener(new KeyAdapter() {
            public void keyReleased(KeyEvent ke) {
@@ -313,9 +383,15 @@ public class FTP_Client {
                 System.out.println(f[i]);
                 filesModel.insertElementAt(f[i].replace(path, ""), i);
             }
+        } catch(FTPConnectionClosedException|SocketException e) {
+            CustomDialog CD = new CustomDialog(frame, "Error", true);
+            CD.setSize(300, 200);
+            CD.setMsg("Connection closed without indication. Trying to reestablish connection.");
+            CD.display();
+            establishConnection();
         } catch (IOException e) {
             e.printStackTrace();
-        } 
+        }
     }
     
     public void upload() {
@@ -340,6 +416,13 @@ public class FTP_Client {
                             ftp.storeFile(path + file.getName(), targetStream);
                    
                                     
+                        } catch(FTPConnectionClosedException|SocketException e) {
+                            CustomDialog CD = new CustomDialog(frame, "Error", true);
+                            CD.setSize(300, 200);
+                            CD.setMsg("Connection closed without indication. Trying to reestablish connection.");
+                            CD.display();
+                            establishConnection();
+                        
                         } catch (IOException err) {
                             System.out.println("File doesnt exists " + err);
                         }
@@ -384,8 +467,271 @@ public class FTP_Client {
                 ftp.deleteFile(selectedItems[i].toString());
             }
             refresh();
+        } catch(FTPConnectionClosedException|SocketException e) {
+            CustomDialog CD = new CustomDialog(frame, "Error", true);
+            CD.setSize(300, 200);
+            CD.setMsg("Connection closed without indication. Trying to reestablish connection.");
+            CD.display();
+            establishConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             System.out.println(e);
+        }
+    }
+    
+    public void download() {
+        try {
+            File f = new File("./download/");
+            if (!f.exists() && !f.isDirectory()) {
+                boolean success = (new File("./download/")).mkdirs();
+                if (!success) {
+                    System.out.println("Failed to create folder download");
+                    return;
+                }
+            }
+            
+            
+            Thread uploadThread = new Thread(new Runnable() {
+                @Override
+                    public void run() {
+                        try {
+                            int[] selected = files.getSelectedIndices();      
+                            Object[] selectedItems = files.getSelectedValues();
+                            ftp.setFileType(FTP.BINARY_FILE_TYPE);
+                            for (int i = 0; i < selected.length; i++) {
+                               /* String remoteFile = path + selectedItems[i].toString();
+                                System.out.println("Downloading file: " + remoteFile);
+                                File downloadFile = new File("./download/" + selectedItems[i].toString());
+                                System.out.println("File will be saved as " + downloadFile);
+                                OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile));
+                                boolean success = ftp.retrieveFile(remoteFile, outputStream);
+                                System.out.println(success ? "File was successfully downloaded" : "Error - File can't be downloaded");
+                                outputStream.close();*/
+                                
+                                String remoteFile = path + selectedItems[i].toString();
+                                System.out.println("Downloading file: " + remoteFile);
+                                File downloadFile = new File("./download/" + selectedItems[i].toString());
+                                System.out.println("File will be saved as " + downloadFile);
+                                
+                                OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile));
+                                InputStream inputStream = ftp.retrieveFileStream(remoteFile);
+                                byte[] bytesArray = new byte[4096];
+                                int bytesRead = -1;
+                                while ((bytesRead = inputStream.read(bytesArray)) != -1) {
+                                    outputStream.write(bytesArray, 0, bytesRead);
+                                }
+                                boolean success = ftp.completePendingCommand();
+                                System.out.println(success ? "File was successfully downloaded" : "Error - File can't be downloaded");
+
+                                outputStream.close();
+                                inputStream.close();
+                            }
+                        } catch(FTPConnectionClosedException|SocketException e) {
+                            CustomDialog CD = new CustomDialog(frame, "Error", true);
+                            CD.setSize(300, 200);
+                            CD.setMsg("Connection closed without indication. Trying to reestablish connection.");
+                            CD.display();
+                            establishConnection();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
+                }
+            });  
+            uploadThread.start();
+            
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void rename() {
+        int[] selected = files.getSelectedIndices();      
+        Object[] selectedItems = files.getSelectedValues();
+        for (int i = 0; i < selected.length; i++) {
+
+                System.out.println("Renaming: " + path + selectedItems[i].toString());
+                String oldName = path + selectedItems[i].toString();
+                String newName = path + selectedItems[i].toString();
+                
+                
+                CustomPromptDialog CD = new CustomPromptDialog(frame); 
+                CD.setTitle("Rename - " + oldName);
+                CD.setModal(true); 
+                CD.setSize(350, 200); 
+                
+                CD.addActionListenerFor(CustomDialog.BUTTON_OK, new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("Rename - " + CustomPromptDialog.inputName.getText()); 
+                        try {
+                            boolean success = ftp.rename(oldName, CustomPromptDialog.inputName.getText());
+                            if (success) {
+                                System.out.println(oldName + " was successfully renamed to: "
+                                        + newName);
+                            } else {
+                                System.out.println("Failed to rename: " + oldName);
+                                CustomDialog CD = new CustomDialog(frame, "Error", true);
+                                CD.setSize(300, 200);
+                                CD.setMsg("Failed to rename: " + oldName);
+                                CD.display();
+                            }
+                            refresh();
+                         } catch(FTPConnectionClosedException|SocketException ex) {
+                            CustomDialog CD = new CustomDialog(frame, "Error", true);
+                            CD.setSize(300, 200);
+                            CD.setMsg("Connection closed without indication. Trying to reestablish connection.");
+                            CD.display();
+                            establishConnection();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        } 
+                        CD.closeDialog();
+                    } 
+                });
+                CD.display(newName, true);
+                
+               
+        }
+    }
+    
+    public void details() {
+        int[] selected = files.getSelectedIndices();      
+        Object[] selectedItems = files.getSelectedValues();
+        for (int i = 0; i < selected.length; i++) {
+            try {
+                ftp.setFileType(FTP.BINARY_FILE_TYPE);
+                FTPFile ftpFile = ftp.mlistFile(path + selectedItems[i].toString());
+                System.out.println("Viewing details of " + path + selectedItems[i].toString());
+                
+                String filePath = path + selectedItems[i].toString();
+                ftp.sendCommand("SIZE", filePath);
+                String size_reply = ftp.getReplyString();
+                System.out.println("Reply for SIZE command: " + size_reply);
+                if(size_reply.split(" ")[0].equals("550")) {
+                    CustomDialog CD = new CustomDialog(frame); 
+                    CD.setTitle("Details - " + path + selectedItems[i].toString());
+                    CD.setModal(true); 
+                    CD.setSize(350, 200); 
+                    CD.setMsg("Name: " + selectedItems[i].toString() + "\r\n" + "Type: Directory");
+                    CD.addActionListenerFor(CustomDialog.BUTTON_OK, new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            System.out.println("Details closed"); 
+                            CD.closeDialog();
+                        } 
+                    });
+                    CD.display();
+                    return;
+                }
+                String time = ftp.getModificationTime(filePath);
+                System.out.println("Server Reply: " + time);
+                //dd.MM.yyyy HH:mm:ss 
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+                Date modificationTime = null;
+                try {
+                    //String timePart = time.split(" ")[1];
+                    modificationTime = dateFormat.parse(time);
+                    System.out.println("File modification time: " + modificationTime);
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                }
+                
+                CustomDialog CD = new CustomDialog(frame); 
+                CD.setTitle("Details - " + path + selectedItems[i].toString());
+                CD.setModal(true); 
+                CD.setSize(350, 200); 
+                CD.setMsg("Name: " + selectedItems[i].toString() + "\r\n" + "Size: " + size_reply.split(" ")[1].trim() + "b\r\n"  + "Time: " + modificationTime);
+                CD.addActionListenerFor(CustomDialog.BUTTON_OK, new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("Details closed"); 
+                        CD.closeDialog();
+                    } 
+                });
+                CD.display();
+                
+                
+              
+                if (ftpFile != null) {
+                    String name = ftpFile.getName();
+                    long size = ftpFile.getSize();
+                    String timestamp = ftpFile.getTimestamp().getTime().toString();
+                    String type = ftpFile.isDirectory() ? "Directory" : "File";
+     
+                    System.out.println("Name: " + name);
+                    System.out.println("Size: " + size);
+                    System.out.println("Type: " + type);
+                    System.out.println("Timestamp: " + timestamp);
+                    
+                    /*CD = new CustomDialog(frame); 
+                    CD.setTitle("Details - " + path + selectedItems[i].toString());
+                    CD.setModal(true); 
+                    CD.setSize(300, 200); 
+                    CD.setMsg("Name: " + name + "\r\n" + "Size: " + size);
+                    CD.addActionListenerFor(CustomDialog.BUTTON_OK, new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            System.out.println("Details closed"); 
+                            CD.closeDialog();
+                        } 
+                    });
+                    CD.display();*/
+                } else {
+                    System.out.println("The specified file/directory may not exist!");
+                }
+            } catch(FTPConnectionClosedException|SocketException e) {
+                CustomDialog CD = new CustomDialog(frame, "Error", true);
+                CD.setSize(300, 200);
+                CD.setMsg("Connection closed without indication. Trying to reestablish connection.");
+                CD.display();
+                establishConnection();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } 
+          
+        }
+    }
+    
+    public void createDirectory() {
+        
+        
+        CustomPromptDialog CD = new CustomPromptDialog(frame); 
+        CD.setTitle("Create new directory");
+        CD.setModal(true); 
+        CD.setSize(350, 200); 
+        
+        CD.addActionListenerFor(CustomDialog.BUTTON_OK, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Create - " + path+CustomPromptDialog.inputName.getText()); 
+                try {
+                    boolean success = ftp.makeDirectory(path+CustomPromptDialog.inputName.getText());
+                    showServerReply(ftp);
+                    if (success) {
+                        System.out.println("Successfully created directory: " + path+CustomPromptDialog.inputName.getText());
+                    } else {
+                        System.out.println("Failed to create directory. See server's reply.");
+                    }
+                    refresh();
+                 } catch(FTPConnectionClosedException|SocketException ex) {
+                    CustomDialog CD = new CustomDialog(frame, "Error", true);
+                    CD.setSize(300, 200);
+                    CD.setMsg("Connection closed without indication. Trying to reestablish connection.");
+                    CD.display();
+                    establishConnection();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } 
+                CD.closeDialog();
+            } 
+        });
+        CD.display("", false);
+    }
+    private static void showServerReply(FTPClient ftpClient) {
+        String[] replies = ftpClient.getReplyStrings();
+        if (replies != null && replies.length > 0) {
+            for (String aReply : replies) {
+                System.out.println("SERVER: " + aReply);
+            }
         }
     }
 }
